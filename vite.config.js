@@ -6,7 +6,6 @@ import { readFileSync } from "node:fs";
 import copy from "rollup-plugin-copy";
 import pkg from "./package.json";
 import * as child from "child_process";
-import { VitePWA } from "vite-plugin-pwa";
 import { resolve } from "path";
 
 const commitHash = child.execSync("git rev-parse --short HEAD").toString().trim();
@@ -50,7 +49,7 @@ function serveLocalesPlugin() {
 }
 
 export default defineConfig({
-    base: './',  // Important for production APK asset paths
+    base: "./", // Important for production APK asset paths
     define: {
         __APP_VERSION__: JSON.stringify(pkg.version),
         __APP_PRODUCTNAME__: JSON.stringify(pkg.productName),
@@ -83,33 +82,7 @@ export default defineConfig({
             ],
             hook: "writeBundle",
         }),
-        VitePWA({
-            registerType: "prompt",
-            workbox: {
-                globPatterns: ["**/*.{js,css,html,ico,png,svg,json,mcm,gltf}"],
-                // 5MB
-                maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-            },
-            includeAssets: ["favicon.ico", "apple-touch-icon.png"],
-            manifest: {
-                name: pkg.displayName,
-                short_name: pkg.productName,
-                description: pkg.description,
-                theme_color: "#ffffff",
-                icons: [
-                    {
-                        src: "/images/pwa/pwa-192-192.png",
-                        sizes: "192x192",
-                        type: "image/png",
-                    },
-                    {
-                        src: "/images/pwa/pwa-512-512.png",
-                        sizes: "512x512",
-                        type: "image/png",
-                    },
-                ],
-            },
-        }),
+        // VitePWA disabled for custom build
     ],
     root: "./src",
     resolve: {
@@ -121,10 +94,19 @@ export default defineConfig({
     server: {
         port: 8000,
         strictPort: true,
-        host: "0.0.0.0", // Listen on all network interfaces for Android device access
+        host: "0.0.0.0",
+        https: {
+            key: readFileSync(resolve(__dirname, ".certs/key.pem")),
+            cert: readFileSync(resolve(__dirname, ".certs/cert.pem")),
+        },
     },
     preview: {
-        port: 8080,
+        port: 8000,
         strictPort: true,
+        host: "0.0.0.0",
+        https: {
+            key: readFileSync(resolve(__dirname, ".certs/key.pem")),
+            cert: readFileSync(resolve(__dirname, ".certs/cert.pem")),
+        },
     },
 });

@@ -5,147 +5,183 @@
         <div class="cf_doc_version_bt">
             <a id="button-documentation" href="" target="_blank"></a>
         </div>
-        <div class="grid-row">
-            <div class="grid-col col3">
-                <div class="default_btn">
-                    <div id="accel_calib_rest">
-                        <a class="calibrateAccel" id="default_btn green" href="#" i18n="initialSetupButtonCalibrateAccel"></a>
+        
+        <!-- Top blocks: Calibration + Pilot/Font side by side -->
+        <div class="setup-top-blocks">
+            <!-- Calibration block -->
+            <div class="gui_box grey setup-calibration-box">
+                <div class="gui_box_titlebar">
+                    <div class="spacer_box_title">Calibration</div>
+                </div>
+                <div class="spacer_box">
+                    <div class="setup-calib-row">
+                        <div class="default_btn">
+                            <div id="accel_calib_rest">
+                                <a class="calibrateAccel" id="default_btn green" href="#" i18n="initialSetupButtonCalibrateAccel"></a>
+                            </div>
+                            <div id="accel_calib_running">
+                                <div class="data-loading-setup">
+                                    <p i18n="initialSetupButtonCalibratingText"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="setup-calib-desc" i18n="initialSetupCalibrateAccelText"></span>
                     </div>
-                    <div id="accel_calib_running">
-                        <div class="data-loading-setup">
-                            <p i18n="initialSetupButtonCalibratingText"></p>
+                    <div class="setup-calib-row">
+                        <div class="default_btn">
+                            <div id="mag_calib_rest">
+                                <a class="calibrateMag" href="#" i18n="initialSetupButtonCalibrateMag"></a>
+                            </div>
+                            <div id="mag_calib_running">
+                                <div class="data-loading-setup">
+                                    <p i18n="initialSetupButtonCalibratingText"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="setup-calib-desc" i18n="initialSetupCalibrateMagText"></span>
+                    </div>
+                    <div class="setup-calib-row">
+                        <div class="default_btn">
+                            <a class="resetSettings" href="#" i18n="initialSetupButtonReset"></a>
+                        </div>
+                        <span class="setup-calib-desc" i18n="initialSetupResetText"></span>
+                    </div>
+                    <div class="setup-calib-row initialSetupRebootBootloader">
+                        <div class="default_btn">
+                            <a class="rebootBootloader" href="#" i18n="initialSetupButtonRebootBootloader"></a>
+                        </div>
+                        <span class="setup-calib-desc" i18n="initialSetupRebootBootloaderText"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pilot / Craft / Font block -->
+            <div class="gui_box grey setup-names-box">
+                <div class="gui_box_titlebar">
+                    <div class="spacer_box_title">Pilot &amp; OSD Font</div>
+                </div>
+                <div class="spacer_box">
+                    <div class="setup-names-block">
+                        <div class="setup-name-row">
+                            <label>Pilot</label>
+                            <input type="text" id="setup-pilot-name" maxlength="16" class="setup-name-input" />
+                            <a href="#" class="setup-name-save" data-target="pilot" title="Save">&#10004;</a>
+                        </div>
+                        <div class="setup-name-row">
+                            <label>Craft</label>
+                            <input type="text" id="setup-craft-name" maxlength="16" class="setup-name-input" />
+                            <a href="#" class="setup-name-save" data-target="craft" title="Save">&#10004;</a>
+                        </div>
+                        <div class="setup-name-row">
+                            <label>Font</label>
+                            <select id="setup-font-preset" class="setup-font-select">
+                                <option value="default">Default</option>
+                                <option value="bold">Bold</option>
+                                <option value="large">Large</option>
+                                <option value="extra_large">Extra Large</option>
+                                <option value="betaflight">Betaflight</option>
+                                <option value="digital">Digital</option>
+                                <option value="clarity">Clarity</option>
+                                <option value="vision">Vision</option>
+                                <option value="impact">Impact</option>
+                                <option value="impact_mini">Impact Mini</option>
+                            </select>
+                            <a href="#" class="setup-font-official-btn" title="Upload selected font">Upload</a>
+                            <a href="#" class="setup-font-upload-btn" title="Upload custom .mcm">.mcm</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="grid-col col9">
-                <div class="cell_setup">
-                    <span i18n="initialSetupCalibrateAccelText"></span>
-                </div>
-            </div>
         </div>
-        <div class="grid-row">
-            <div class="grid-col col3">
-                <div class="default_btn">
-                    <div id="mag_calib_rest">
-                        <a class="calibrateMag" href="#" i18n="initialSetupButtonCalibrateMag"></a>
-                    </div>
-                    <div id="mag_calib_running">
-                        <div class="data-loading-setup">
-                            <p i18n="initialSetupButtonCalibratingText"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="grid-col col9">
-                <div class="cell_setup">
-                    <span i18n="initialSetupCalibrateMagText"></span>
-                </div>
-            </div>
-        </div>
-        <div class="grid-row">
-            <div class="grid-col col3">
-                <div class="default_btn initialSetupReset">
-                    <a class="resetSettings" href="#" i18n="initialSetupButtonReset"></a>
-                </div>
-            </div>
-            <div class="grid-col col9">
-                <div class="cell_setup initialSetupReset">
-                    <span i18n="initialSetupResetText"></span>
-                </div>
-            </div>
-        </div>
-        <div class="grid-row">
-            <div class="grid-col col3">
-                <div class="default_btn initialSetupRebootBootloader">
-                    <a class="rebootBootloader" href="#" i18n="initialSetupButtonRebootBootloader"></a>
-                </div>
-            </div>
-            <div class="grid-col col9">
-                <div class="cell_setup initialSetupRebootBootloader">
-                    <span i18n="initialSetupRebootBootloaderText"></span>
-                </div>
-            </div>
-        </div>
-        <div class="modelwrapper"></div>
-        <div class="grid-row grid-box col4">
-            <div class="col-span-3 model-and-info">
-                <div id="interactive_block">
-                    <div id="canvas_wrapper" class="background_paper">
-                        <canvas id="canvas"></canvas>
-                        <div class="attitude_info">
-                            <dl>
-                                <dt i18n="initialSetupHeading"></dt>
-                                <dd class="heading">&nbsp;</dd>
-                                <dt i18n="initialSetupPitch"></dt>
-                                <dd class="pitch">&nbsp;</dd>
-                                <dt i18n="initialSetupRoll"></dt>
-                                <dd class="roll">&nbsp;</dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <a class="reset sm-min" href="#" i18n="initialSetupButtonResetZaxis"></a>
-                </div>
-            </div>
-            <div class="col-span-1 grid-box col1">
-                <div class="gui_box grey instrumentsbox" align="center">
-                    <div class="gui_box_titlebar" align="left">
-                        <div class="spacer_box_title" i18n="initialSetupInstrumentsHead"></div>
-                        <div class="helpicon cf_tip" i18n_title="initialSetupInstrumentsHeadHelp"></div>
-                    </div>
-                    <span id="attitude"></span> <span id="heading"></span>
-                </div>
-                <div class="gui_box grey">
+        
+        <!-- Main content with three columns -->
+        <div class="three-column-layout">
+            <!-- Left Column: Motor Direction + Motor RPM -->
+            <div class="left-column">
+                <div class="gui_box grey motor-direction-box">
                     <div class="gui_box_titlebar">
-                        <div class="spacer_box_title" i18n="initialSetupGPSHead"></div>
-                        <div class="helpicon cf_tip" i18n_title="initialSetupGPSHeadHelp"></div>
-                    </div>
-                    <div class="spacer_box GPS_info">
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="cf_table" role="presentation">
-                            <tbody>
-                            <tr>
-                                <td i18n="gps3dFix"></td>
-                                <td><span class="colorToggle" i18n="gpsFixFalse"></span></td>
-                            </tr>
-                            <tr>
-                                <td i18n="gpsSats"></td>
-                                <td class="gpsSats"></td>
-                            </tr>
-                            <tr>
-                                <td i18n="gpsLatitude"></td>
-                                <td class="latitude"><a href="#" target="_blank">0.0000 deg</a></td>
-                            </tr>
-                            <tr>
-                                <td i18n="gpsLongitude"></td>
-                                <td class="longitude"><a href="#" target="_blank">0.0000 deg</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="gui_box grey sonarBox">
-                    <div class="gui_box_titlebar">
-                        <div class="spacer_box_title" i18n="initialSetupSonarHead"></div>
-                        <div class="helpicon cf_tip" i18n_title="initialSetupSonarHeadHelp"></div>
+                        <div class="spacer_box_title">Motor Direction</div>
                     </div>
                     <div class="spacer_box">
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="cf_table" role="presentation">
-                            <tbody>
-                            <tr>
-                                <td id="sonarAltitude" i18n="initialSetupAltitudeSonar"></td>
-                                <td class="sonarAltitude">0.0 cm</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="mixerPreview">
+                            <!-- SVG injected dynamically -->
+                        </div>
+                        <div id="motorDirectionButtonsWrapper" class="motor-direction-buttons">
+                        </div>
                     </div>
                 </div>
+
+                <div class="gui_box grey motor-rpm-box">
+                    <div class="gui_box_titlebar">
+                        <div class="spacer_box_title" i18n="tabMotors"></div>
+                    </div>
+                    <div class="spacer_box">
+                        <div class="motor-rpm-controls">
+                            <label class="motor-enable-label">
+                                <input id="setupMotorsEnableTestMode" type="checkbox" class="togglesmall"/>
+                                <span i18n="motorsEnableControl"></span>
+                            </label>
+                            <a href="#" class="stop-motors-btn regular-button" i18n="escDshotDirectionDialog-StopWizard">Stop</a>
+                        </div>
+                        <div class="motor-rpm-bars">
+                            <!-- Generated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gui_box grey">
+                    <div class="gui_box_titlebar">
+                        <div class="spacer_box_title" i18n="blackboxConfiguration"></div>
+                    </div>
+                    <div class="spacer_box">
+                        <div class="line blackboxDevice">
+                            <select name="blackbox_device"></select>
+                            <span i18n="onboardLoggingBlackbox"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Column: 3D Model + RC Channel Bars -->
+            <div class="middle-column">
+                <div class="model-and-info">
+                    <div id="interactive_block">
+                        <div id="canvas_wrapper" class="background_paper">
+                            <canvas id="canvas"></canvas>
+                            <div class="attitude_info">
+                                <dl>
+                                    <dt i18n="initialSetupHeading"></dt>
+                                    <dd class="heading">&nbsp;</dd>
+                                    <dt i18n="initialSetupPitch"></dt>
+                                    <dd class="pitch">&nbsp;</dd>
+                                    <dt i18n="initialSetupRoll"></dt>
+                                    <dd class="roll">&nbsp;</dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <a class="reset sm-min" href="#" i18n="initialSetupButtonResetZaxis"></a>
+                    </div>
+                </div>
+
+                <div class="gui_box grey">
+                    <div class="gui_box_titlebar">
+                        <div class="spacer_box_title" i18n="tabReceiver"></div>
+                    </div>
+                    <div class="spacer_box">
+                        <div class="rc-bars">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: System Info + VTX -->
+            <div class="right-column">
                 <div class="gui_box grey">
                     <div class="gui_box_titlebar">
                         <div class="spacer_box_title" i18n="initialSetupInfoHead"></div>
-                        <div class="helpicon cf_tip" i18n_title="initialSetupInfoHeadHelp"></div>
                     </div>
                     <div class="spacer_box">
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="cf_table system_info" role="presentation">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="cf_table" role="presentation">
                             <tbody>
                             <tr>
                                 <td id="arming-disable-flag" i18n="initialSetupArmingDisableFlags" class="cf_tip"></td>
@@ -168,116 +204,54 @@
                                 <td class="rssi">0 %</td>
                             </tr>
                             <tr>
-                                <td id="mcu" i18n="initialSetupMCU"></td>
-                                <td class="mcu"></td>
-                            </tr>
-                            <tr>
                                 <td id="cpu-temp" i18n="initialSetupCpuTemp"></td>
                                 <td class="cpu-temp">0 &#8451;</td>
                             </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="gui_box grey" id="sensorInfoBox">
-                    <div class="gui_box_titlebar">
-                        <div class="spacer_box_title" i18n="initialSensorInfoHead"></div>
-                        <div class="helpicon cf_tip" i18n_title="initialSensorInfoHeadHelp"></div>
-                    </div>
-                    <div class="spacer_box">
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="cf_table" role="presentation">
-                            <tbody>
-                            <tr>
-                                <td id="sensor_gyro_hw" i18n="initialSetupSensorGyro"></td>
-                                <td class="sensor_gyro_hw"></td>
-                            </tr>
-                            <tr>
-                                <td id="sensor_acc_hw" i18n="initialSetupSensorAcc"></td>
-                                <td class="sensor_acc_hw"></td>
-                            </tr>
-                            <tr>
-                                <td id="sensor-mag-hw" i18n="initialSetupSensorMag"></td>
-                                <td class="sensor_mag_hw"></td>
-                            </tr>
-                            <tr>
-                                <td id="sensor_baro_hw" i18n="initialSetupSensorBaro"></td>
-                                <td class="sensor_baro_hw"></td>
-                            </tr>
-                            <tr>
-                                <td id="sensor-sonar-hw" i18n="initialSetupSensorSonar"></td>
-                                <td class="sensor_sonar_hw"></td>
-                            </tr>
-                            <tr>
-                                <td id="sensor-opticalflow-hw" i18n="initialSetupSensorOpticalflow"></td>
-                                <td class="sensor_opticalflow_hw"></td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="gui_box grey">
+
+                <div class="gui_box grey vtx_status">
                     <div class="gui_box_titlebar">
-                        <div class="spacer_box_title" i18n="initialSetupInfoBuild"></div>
-                        <div class="helpicon cf_tip" i18n_title="initialSetupInfoFirmwareHelp"></div>
+                        <div class="spacer_box_title" i18n="vtxActualState"></div>
                     </div>
-                    <div class="spacer_box">
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="cf_table" role="presentation">
+                    <div class="spacer_box VTX_info">
+                        <table class="cf_table vtx-info-table">
                             <tbody>
                                 <tr>
-                                    <td id="api-version" i18n="initialSetupInfoAPIversion"></td>
-                                    <td class="api-version"></td>
+                                    <td class="description_text" i18n="vtxDeviceReady"></td>
+                                    <td><span class="vtx_ready colorToggle"></span></td>
                                 </tr>
-                                <tr>
-                                    <td id="build-date" i18n="initialSetupInfoBuildDate"></td>
-                                    <td class="build-date"></td>
+                                <tr class="description vtx_type">
+                                    <td class="description_text" i18n="vtxType"></td>
+                                    <td class="description_value" id="setup_vtx_type_description"></td>
                                 </tr>
-                                <tr>
-                                    <td id="build-type" i18n="initialSetupInfoBuildType"></td>
-                                    <td class="build-type"></td>
+                                <tr class="description vtx_power">
+                                    <td class="description_text" i18n="vtxPower"></td>
+                                    <td class="description_value" id="setup_vtx_power_description"></td>
                                 </tr>
-                                <tr>
-                                    <td id="build-info" i18n="initialSetupInfoBuildInfo"></td>
-                                    <td class="build-info"></td>
+                                <tr class="description pit_mode">
+                                    <td class="description_text" i18n="vtxPitMode"></td>
+                                    <td class="description_value" id="setup_vtx_pit_mode_description"></td>
                                 </tr>
-                                <tr>
-                                    <td id="build-firmware" i18n="initialSetupInfoBuildFirmware"></td>
-                                    <td class="build-firmware"></td>
+                                <tr class="description vtx_freq_live">
+                                    <td class="description_text">Frequency</td>
+                                    <td class="description_value vtx-live-freq-value">-</td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div class="gui_box grey">
-                    <div class="gui_box_titlebar">
-                        <div class="spacer_box_title" i18n="initialSetupNetworkInfo"></div>
-                        <div class="helpicon cf_tip" i18n_title="initialSetupNetworkInfoHelp"></div>
-                    </div>
-                    <div class="spacer_box">
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="cf_table" role="presentation">
-                            <tbody>
-                                <tr>
-                                    <td id="network-status" i18n="initialSetupNetworkInfoStatus"></td>
-                                    <td class="network-status"></td>
-                                </tr>
-                                <tr>
-                                    <td id="network-type" i18n="initialSetupNetworkType"></td>
-                                    <td class="network-type"></td>
-                                </tr>
-                                <tr>
-                                    <td id="network-downlink" i18n="initialSetupNetworkDownlink"></td>
-                                    <td class="network-downlink"></td>
-                                </tr>
-                                <tr>
-                                    <td id="network-rtt" i18n="initialSetupNetworkRtt"></td>
-                                    <td class="network-rtt"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="vtx-freq-table-wrapper">
+                            <!-- VTX frequency table generated dynamically -->
+                        </div>
+                        <div class="vtx-active-freq-label">Active: <span class="vtx-active-freq-value">-</span></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Dialogs -->
     <dialog class="dialogConfirmReset">
         <h3 i18n="dialogConfirmResetTitle"></h3>
         <div class="content">
@@ -296,6 +270,14 @@
         </div>
         <div class="dialogButtons">
             <a href="#" class="dialogBuildInfo-closebtn regular-button" i18n="close"></a>
+        </div>
+    </dialog>
+
+    <dialog closedby="any" class="dialogFontUpload html-dialog" style="width: 400px;">
+        <div class="html-dialog-content">
+            <div class="font-upload-status">Waiting...</div>
+            <progress class="setup-font-progress" value="0" max="100"></progress>
+            <div class="font-upload-percent">0%</div>
         </div>
     </dialog>
 

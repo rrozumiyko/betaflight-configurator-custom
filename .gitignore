@@ -51,3 +51,9 @@ build
 # Ignore Capacitor Android build output directories for local plugins
 capacitor-plugins/*/android/bin/
 
+
+# Local HTTPS certificates
+.certs/
+
+# npm lockfile (project uses yarn)
+package-lock.json

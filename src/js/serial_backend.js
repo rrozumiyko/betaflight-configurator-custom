@@ -319,52 +319,80 @@ function onOpen(openInfo) {
         const result = getConfig("expertMode")?.expertMode ?? false;
         $('input[name="expertModeCheckbox"]').prop("checked", result).trigger("change");
 
-        // serial adds event listener for selected connection type
-        serial.removeEventListener("receive", read_serial_adapter);
-        serial.addEventListener("receive", read_serial_adapter);
-
         setConnectionTimeout();
         FC.resetState();
         mspHelper = new MspHelper();
-        MSP.listen(mspHelper.process_data.bind(mspHelper));
 
-        console.log(`${logHead} Requesting configuration data`);
+        console.log(`${logHead} Draining serial buffer before MSP init...`);
 
-        MSP.send_message(MSPCodes.MSP_API_VERSION, false, false, function () {
-            gui_log(i18n.getMessage("apiVersionReceived", FC.CONFIG.apiVersion));
+        // Drain any stale data in the USB buffer before attaching the MSP parser.
+        // The WebSerial readLoop dispatches "receive" events; without a listener
+        // they are simply discarded.  After the drain period we attach the
+        // listener and start the MSP conversation.
+        const DRAIN_DELAY = 300;
+        const API_VERSION_DELAY = 500;
+        const API_VERSION_MAX_RETRIES = 5;
+        let apiVersionRetries = 0;
 
-            if (FC.CONFIG.apiVersion.includes("null") || FC.CONFIG.apiVersion === "0.0.0") {
-                abortConnection();
-                return;
-            }
+        setTimeout(() => {
+            // Now attach the serial listener and MSP parser
+            serial.removeEventListener("receive", read_serial_adapter);
+            serial.addEventListener("receive", read_serial_adapter);
+            MSP.listen(mspHelper.process_data.bind(mspHelper));
 
-            if (semver.gte(FC.CONFIG.apiVersion, CONFIGURATOR.API_VERSION_ACCEPTED)) {
-                MSP.send_message(MSPCodes.MSP_FC_VARIANT, false, false, function () {
-                    if (FC.CONFIG.flightControllerIdentifier === "BTFL") {
-                        MSP.send_message(MSPCodes.MSP_FC_VERSION, false, false, function () {
-                            gui_log(
-                                i18n.getMessage("fcInfoReceived", [
-                                    FC.CONFIG.flightControllerIdentifier,
-                                    FC.CONFIG.flightControllerVersion,
-                                ]),
+            console.log(`${logHead} Requesting configuration data`);
+
+            function requestApiVersion() {
+                MSP.send_message(MSPCodes.MSP_API_VERSION, false, false, function () {
+                    if (FC.CONFIG.apiVersion.includes("null") || FC.CONFIG.apiVersion === "0.0.0") {
+                        apiVersionRetries++;
+                        if (apiVersionRetries < API_VERSION_MAX_RETRIES) {
+                            console.warn(
+                                `${logHead} API version 0.0.0, retry ${apiVersionRetries}/${API_VERSION_MAX_RETRIES}`,
                             );
+                            FC.CONFIG.apiVersion = "0.0.0";
+                            MSP.callbacks = [];
+                            setTimeout(requestApiVersion, API_VERSION_DELAY);
+                            return;
+                        }
+                        console.error(`${logHead} API version still 0.0.0 after ${API_VERSION_MAX_RETRIES} retries`);
+                        abortConnection();
+                        return;
+                    }
 
-                            MSP.send_message(MSPCodes.MSP_BUILD_INFO, false, false, function () {
-                                gui_log(i18n.getMessage("buildInfoReceived", [FC.CONFIG.buildInfo]));
+                    gui_log(i18n.getMessage("apiVersionReceived", FC.CONFIG.apiVersion));
 
-                                MSP.send_message(MSPCodes.MSP_BOARD_INFO, false, false, processBoardInfo);
-                            });
+                    if (semver.gte(FC.CONFIG.apiVersion, CONFIGURATOR.API_VERSION_ACCEPTED)) {
+                        MSP.send_message(MSPCodes.MSP_FC_VARIANT, false, false, function () {
+                            if (FC.CONFIG.flightControllerIdentifier === "BTFL") {
+                                MSP.send_message(MSPCodes.MSP_FC_VERSION, false, false, function () {
+                                    gui_log(
+                                        i18n.getMessage("fcInfoReceived", [
+                                            FC.CONFIG.flightControllerIdentifier,
+                                            FC.CONFIG.flightControllerVersion,
+                                        ]),
+                                    );
+
+                                    MSP.send_message(MSPCodes.MSP_BUILD_INFO, false, false, function () {
+                                        gui_log(i18n.getMessage("buildInfoReceived", [FC.CONFIG.buildInfo]));
+
+                                        MSP.send_message(MSPCodes.MSP_BOARD_INFO, false, false, processBoardInfo);
+                                    });
+                                });
+                            } else {
+                                showVersionMismatchAndCli(
+                                    i18n.getMessage("firmwareTypeNotSupported", [CONFIGURATOR.API_VERSION_ACCEPTED]),
+                                );
+                            }
                         });
                     } else {
-                        showVersionMismatchAndCli(
-                            i18n.getMessage("firmwareTypeNotSupported", [CONFIGURATOR.API_VERSION_ACCEPTED]),
-                        );
+                        showVersionMismatchAndCli(i18n.getMessage("firmwareUpgradeRequired"));
                     }
                 });
-            } else {
-                showVersionMismatchAndCli(i18n.getMessage("firmwareUpgradeRequired"));
             }
-        });
+
+            requestApiVersion();
+        }, DRAIN_DELAY);
     } else {
         abortConnection();
     }

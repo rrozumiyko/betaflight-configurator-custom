@@ -48,27 +48,5 @@ import "../components/EscDshotDirection/Styles.css";
 import "../css/dark-theme.less";
 import "./main";
 
-import GUI from "./gui";
-import { registerSW } from "virtual:pwa-register";
-
-const updateSW = registerSW({
-    onNeedRefresh() {
-        console.log("Detected onNeedRefresh");
-        GUI.showYesNoDialog({
-            title: i18n.getMessage("pwaOnNeedRefreshTitle"),
-            text: i18n.getMessage("pwaOnNeedRefreshText"),
-            buttonYesText: i18n.getMessage("yes"),
-            buttonNoText: i18n.getMessage("no"),
-            buttonYesCallback: () => updateSW(),
-            buttonNoCallback: null,
-        });
-    },
-    onOfflineReady() {
-        console.log("Detected onOfflineReady");
-        GUI.showInformationDialog({
-            title: i18n.getMessage("pwaOnOffilenReadyTitle"),
-            text: i18n.getMessage("pwaOnOffilenReadyText"),
-            buttonConfirmText: i18n.getMessage("OK"),
-        });
-    },
-});
+// PWA update disabled for custom build
+// import { registerSW } from "virtual:pwa-register";

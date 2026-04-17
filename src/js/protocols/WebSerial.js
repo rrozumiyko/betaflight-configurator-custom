@@ -117,7 +117,18 @@ class WebSerial extends EventTarget {
     async loadDevices() {
         try {
             const ports = await navigator.serial.getPorts();
-            this.ports = ports.map((port) => this.createPort(port));
+            // Filter out non-USB serial ports (e.g. Raspberry Pi built-in UART)
+            // that have no usbVendorId — they can never be a flight controller
+            this.ports = ports
+                .filter((port) => {
+                    const info = port.getInfo();
+                    if (info.usbVendorId === undefined) {
+                        console.log(`${logHead} Skipping non-USB serial port (no VID/PID)`);
+                        return false;
+                    }
+                    return true;
+                })
+                .map((port) => this.createPort(port));
         } catch (error) {
             console.error(`${logHead} Error loading devices:`, error);
         }
