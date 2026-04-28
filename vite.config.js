@@ -95,6 +95,7 @@ export default defineConfig({
         port: 8000,
         strictPort: true,
         host: "0.0.0.0",
+        allowedHosts: true,
         https: {
             key: readFileSync(resolve(__dirname, ".certs/key.pem")),
             cert: readFileSync(resolve(__dirname, ".certs/cert.pem")),
@@ -104,6 +105,7 @@ export default defineConfig({
         port: 8000,
         strictPort: true,
         host: "0.0.0.0",
+        allowedHosts: true,
         https: {
             key: readFileSync(resolve(__dirname, ".certs/key.pem")),
             cert: readFileSync(resolve(__dirname, ".certs/cert.pem")),
