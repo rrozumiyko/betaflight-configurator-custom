@@ -46,6 +46,10 @@ import "select2/dist/css/select2.min.css";
 import "multiple-select/dist/multiple-select.min.css";
 import "../components/EscDshotDirection/Styles.css";
 import "../css/dark-theme.less";
+import { installCapacitorUsbPolyfill } from "./capacitor/dfu-polyfill";
+
+installCapacitorUsbPolyfill();
+
 import "./main";
 
 // PWA update disabled for custom build
