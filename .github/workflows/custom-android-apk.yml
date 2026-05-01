@@ -1,0 +1,81 @@
+name: Build Custom Android APK
+
+on:
+  push:
+    branches: [custom-setup]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build web assets
+        run: yarn build
+
+      - name: Generate Capacitor config
+        run: node capacitor.config.generator.mjs
+
+      - name: Sync Capacitor Android project
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Rename APK
+        id: rename
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          SHA=${GITHUB_SHA::8}
+          NAME="betaflight-configurator-custom-${VERSION}-${SHA}.apk"
+          mkdir -p artifacts
+          cp android/app/build/outputs/apk/debug/app-debug.apk "artifacts/${NAME}"
+          echo "apk_name=${NAME}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.rename.outputs.apk_name }}
+          path: artifacts/${{ steps.rename.outputs.apk_name }}
+          retention-days: 30
+
+      - name: Publish prerelease
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: custom-${{ steps.rename.outputs.version }}-${{ github.run_number }}
+          name: Custom build ${{ steps.rename.outputs.version }} (#${{ github.run_number }})
+          body: |
+            Автоматичний debug-білд гілки `custom-setup`.
+            Commit: ${{ github.sha }}
+          prerelease: true
+          files: artifacts/${{ steps.rename.outputs.apk_name }}
