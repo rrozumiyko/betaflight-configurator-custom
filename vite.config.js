@@ -10,6 +10,18 @@ import { resolve } from "path";
 
 const commitHash = child.execSync("git rev-parse --short HEAD").toString().trim();
 
+function loadHttpsConfig() {
+    try {
+        return {
+            key: readFileSync(resolve(__dirname, ".certs/key.pem")),
+            cert: readFileSync(resolve(__dirname, ".certs/cert.pem")),
+        };
+    } catch {
+        return undefined;
+    }
+}
+const httpsConfig = loadHttpsConfig();
+
 function serveFileFromDirectory(directory) {
     return (req, res, next) => {
         const filePath = req.url.replace(new RegExp(`^/${directory}/`), "");
@@ -96,19 +108,13 @@ export default defineConfig({
         strictPort: true,
         host: "0.0.0.0",
         allowedHosts: true,
-        https: {
-            key: readFileSync(resolve(__dirname, ".certs/key.pem")),
-            cert: readFileSync(resolve(__dirname, ".certs/cert.pem")),
-        },
+        https: httpsConfig,
     },
     preview: {
         port: 8000,
         strictPort: true,
         host: "0.0.0.0",
         allowedHosts: true,
-        https: {
-            key: readFileSync(resolve(__dirname, ".certs/key.pem")),
-            cert: readFileSync(resolve(__dirname, ".certs/cert.pem")),
-        },
+        https: httpsConfig,
     },
 });
